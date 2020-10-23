@@ -178,6 +178,10 @@ echo -e "##gtrack version: 1.0\n##track type: linked segments\n###seqid\tstart\t
 
 bedtools intersect -c -a chr18_bead_interactions.gtrack -b lad/GSE109924_lad_D0-rep1.bed | awk '{if($7>=1) print $1 "\t" $2 "\t" $3 "\t" $4 "\t" $5 "\t1\t" $6; else  print $1 "\t" $2 "\t" $3 "\t" $4 "\t" $5 "\t.\t" $6}' >> chr18_bead_interactions.lads.gtrack 
 ```
+```diff
+!If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by:
+cp backup/16/chr18_bead_interactions.lads.gtrack .
+```
 
 **17. Run Chrom3D based on the GTrack file**
 ```bash
