@@ -119,7 +119,11 @@ armatus-linux-x64 -r 50000 -c chr18 -S -i hic/matrix/chr18 -g .6 -o hic/tads/chr
 
 The `-r 50000` sets the bin-size to 50000 bp,  `-c chr18` specifies that only chromosome 18 should be considdered, `-i hic/matrix/chr18` provides the input data (in matrix format), `-g .6` is the gamma-max parameter indicating the highest resolution to generate domains (often is set based on trial and error, `-o hic/tads/chr18` gives the output for the TADs.
 
-
+```diff
+!If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by:
+mkdir -p hic/tads/
+cp backup/10/chr18.consensus.txt hic/tads/
+```
 **11. Since Armatus output is end-inclusive, convert to BED by adding 1 to end position**
 ```bash
 awk '{printf("%s\t%i\t%i\n",$1,$2,$3+1)}' hic/tads/chr18.consensus.txt > hic/tads/chr18.consensus.bed
