@@ -35,12 +35,12 @@ gunzip lad/GSE109924_lad_D0-rep1.bed.gz
 
 **3. Setting up HiC-Pro**
 
-HiC-Pro will be used to process the Hi-C data, including mapping the reads and aggregation of the contact frequencies.
+HiC-Pro will be used to process the Hi-C data, including mapping the reads and aggregation of the contact frequencies (takes a few minutes).
 ```bash
 curl -O https://raw.githubusercontent.com/nservant/HiC-Pro/master/config-hicpro.txt
 curl -O https://raw.githubusercontent.com/nservant/HiC-Pro/master/annotation/chrom_hg19.sizes
 curl -O https://raw.githubusercontent.com/nservant/HiC-Pro/master/annotation/HindIII_resfrag_hg19.bed
-curl -O ftp://ftp.ccb.jhu.edu/pub/data/bowtie2_indexes/hg19.zip # Large file, might take a few minutes to download
+curl -O ftp://ftp.ccb.jhu.edu/pub/data/bowtie2_indexes/hg19.zip
 unzip hg19.zip -d hg19
 ```
 
