@@ -162,6 +162,11 @@ python processing_scripts/NCHG_fdr_oddratio_calc.py chr18_bead_interactions.intr
 ```
 Here, `NCHG` is used to determine statistically singificant interactions between beads. `-m 50000` gives the minimum interaction length (in bp), `-p chr18_bead_interactions.intra.nocen.bedpe` specifies the input file. The output is redirected into the file `chr18_bead_interactions.intra.nocen.NCHG.sig`. The `NCHG` program uses the Non-central Hypergeometric distribution to determine statistically singificant interactions. This model takes into account the total number of interactions on the chromosome, the number of interactions for the two involved beads, and the genomic/linear distance between the two beads.
 
+```diff
+!If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by:
+cp backup/15/chr18_bead_interactions.intra.nocen.NCHG.sig .
+```
+
 **16. Generate the Chrom3D input file in GTrack format, specifying the 3D model setup**
 
 Chrom3D relies on the [GTrack](https://github.com/gtrack/gtrack) file format for specifying the model setup. This includes the genomic position of the beads, their size, interactions between them and interactions with the nuclear periphery. This input file also defines the color of the beads.
