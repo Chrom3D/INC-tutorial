@@ -69,7 +69,7 @@ make -C processing_scripts/NCHG_hic/
 **6. Adapting the `config-hicpro.txt` file**
 
 To prepare for running HiC-Pro, we will need to change two lines in the `config-hicpro.txt` file. Use a text-editor (like emacs, vim, nano, (or TextEdit [MacOS]) to:
-- Add the bowtie path to line nr. 39: `BOWTIE2_IDX_PATH =` -> `BOWTIE2_IDX_PATH = [fullpath]/INC-tutorial/hg19]/` where `[fullpath]` is the full path to your current working directory
+- Add the bowtie path to line nr. 39: `BOWTIE2_IDX_PATH =` -> `BOWTIE2_IDX_PATH = [fullpath]/INC-tutorial/hg19]/` where `[fullpath]` is the full path to your current working directory (use the `pwd` command if you are uncertain about the working dir.) 
 - Change line nr. 89: `BIN_SIZE = 20000 40000 150000 500000 1000000` -> `BIN_SIZE = 50000 1000000`
 
 **7. Run HiC-Pro (Takes ~10 minutes)**
@@ -77,7 +77,7 @@ To prepare for running HiC-Pro, we will need to change two lines in the `config-
 HiC-Pro --input fastq --output hicpro_results --conf config-hicpro.txt
 ```
 ```diff
-! If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by
+! If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by:
 mkdir -p hicpro_results/hic_results/matrix/chr18/raw/50000/
 cp backup/7/* hicpro_results/hic_results/matrix/chr18/raw/50000/
 ```
@@ -102,6 +102,13 @@ do
 chrname=$(basename $chr)
 cut -f 2,5,7 $chr > hic/matrix/$chrname
 done
+```
+```diff
+!If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by:
+mkdir -p hic/bedpe/intra/
+mkdir -p hic/matrix/
+cp backup/9/bedpe/chr18 hic/bedpe/intra/
+cp backup/9/matrix/chr18 hic/matrix/
 ```
 
 **10. Running Armatus to call TADs**
