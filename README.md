@@ -69,7 +69,7 @@ make -C processing_scripts/NCHG_hic/
 
 **6. Adapting the `config-hicpro.txt` file**
 
-To prepare for running HiC-Pro, we will need to change two lines in the `config-hicpro.txt` file:
+To prepare for running HiC-Pro, we will need to change two lines in the `config-hicpro.txt` file. Use a text-editor (like emacs, vim or nano) to:
 - Add the bowtie path to line nr. 39: `BOWTIE2_IDX_PATH =` -> `BOWTIE2_IDX_PATH = [fullpath]/INC-tutorial/hg19]/` where `[fullpath]` is the full path to your current working directory
 - Change line nr. 89: `BIN_SIZE = 20000 40000 150000 500000 1000000` -> `BIN_SIZE = 50000 1000000`
 
