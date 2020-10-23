@@ -76,6 +76,12 @@ To prepare for running HiC-Pro, we will need to change two lines in the `config-
 ```bash
 HiC-Pro --input fastq --output hicpro_results --conf config-hicpro.txt
 ```
+```diff
+! If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by
+mkdir -p hicpro_results/hic_results/matrix/chr18/raw/50000/
+cp backup/7/* hicpro_results/hic_results/matrix/chr18/raw/50000/
+```
+
 
 **8. Setup the folder structure for the HiC contacts**
 ```bash
