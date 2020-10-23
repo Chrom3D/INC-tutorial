@@ -9,6 +9,7 @@ This tutorial uses [HiC-Pro](https://github.com/nservant/HiC-Pro) to map and pro
 To perform the steps in this step-by-step guide a computer running Unix/Linux or macOS, and/or a server running Linux is needed. The bash shell is used to run all the commands specified in the step-by-step guide. It is assumed that the user is somewhat knowledgeable in using the command line.
 
 # Software needed to run the steps described:
+To follow the steps in this tutorial you will first need to install some software (see list below). Some of these tools might already be installed on your system, and other tools might be a bit challenging to install, such as Armatus and HiC-Pro. If you are having trouble installing the tools, ask your system administrator or a colleague with knownedge of UNIX systems to help you.
 - [Boost](https://www.boost.org/users/history/version_1_73_0.html) ([Installation instructions](https://www.boost.org/doc/libs/1_74_0/more/getting_started/unix-variants.html#prepare-to-use-a-boost-library-binary)) (required by Chrom3D and Armatus)
 - [Chrom3D v1.0.2](https://github.com/Chrom3D/Chrom3D/releases/tag/v1.0.2) ([Installation instructions](https://github.com/Chrom3D/Chrom3D#installation-instructions)) (available in your path)
 - [Armatus 2.3](https://github.com/kingsfordgroup/armatus/archive/master.zip) ([Installation instructions](https://github.com/kingsfordgroup/armatus#building-from-source)) (available in your path) 
