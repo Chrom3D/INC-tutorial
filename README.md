@@ -187,7 +187,11 @@ cp backup/16/chr18_bead_interactions.lads.gtrack .
 ```bash
 Chrom3D -c 0.001 --nucleus -l 10000 -y 0.01 -r 5.0 -n 100000 chr18_bead_interactions.lads.gtrack > model.cmm
 ```
-
+```diff
+!If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by:
+cp backup/17/model.cmm
+cp backup/17/model_redlad.cmm
+```
 
 **18. Visualizing `model.cmm` in ChimeraX**
 - If you are running this step-by-step guide on a server, download the `model.cmm` file to your local computer
