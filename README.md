@@ -50,7 +50,7 @@ unzip hg19.zip -d hg19
 As part of the Chrom3D package, several processing scripts are available to reformat and process the data to prepare for running Chrom3D.
 ```bash
 mkdir processing_scripts
-curl -O https://github.com/Chrom3D/preprocess_scripts/archive/v.1.2.zip
+curl -OL https://github.com/Chrom3D/preprocess_scripts/archive/v.1.2.zip
 unzip -j -d processing_scripts/ v.1.2.zip preprocess_scripts-v.1.2/NCHG_hic.zip
 unzip -j -d processing_scripts/ v.1.2.zip preprocess_scripts-v.1.2/cap_chr_end.py
 unzip -j -d processing_scripts/ v.1.2.zip preprocess_scripts-v.1.2/make_diploid_gtrack.py
