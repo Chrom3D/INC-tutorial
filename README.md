@@ -204,7 +204,7 @@ cp backup/17/model_redlad.cmm
 **18. Visualizing `model.cmm` in ChimeraX**
 - If you are running this step-by-step guide on a server, download the `model.cmm` file to your local computer
 - The resulting `model.cmm` (and `model_redlad.cmm` from step 19) can be opened in ChimeraX and displays of these turned on and off in the bottom right "Models" panel. To generate tomographic views of models, the command "clip" can be used in the "Command:" field in the bottom panel of ChimeraX. Background color and other graphical adjustments can be performed by clicking the "Graphics" button in the top panel.
-- In ChimeraX, the command "shape sphere center 0,0,0 radius 5.0 color #ffc9b5 slab 0.5" can be used in the "Command" field in the bottom panel to display a nucleus structure on top of the model view. To change opacity of the nucleus model, click the colored square called "sphere" in the "Models" panel in the bottom right of the view, and select e.g. 30%. 
+- In ChimeraX, the command `shape sphere center 0,0,0 radius 5.0 color #ffc9b5 slab 0.5` can be used in the "Command" field in the bottom panel to display a nucleus structure on top of the model view. To change opacity of the nucleus model, click the colored square called "sphere" in the "Models" panel in the bottom right of the view, and select e.g. 30%. 
 - Again, "clip" can be used to clip this to generate tomographic views. The model can also be tilted to allow a better perception of depth in the structures. Figure 4 shows some of the resulting illustrations that can be generated using ChimeraX.
 
 
@@ -215,6 +215,8 @@ unzip -j -d processing_scripts/ v.1.2.zip preprocess_scripts-v.1.2/color_beads.p
 awk '$6==1' chr18_bead_interactions.lads.gtrack | cut -f 4 > lads.ids
 python processing_scripts/color_beads.py model.cmm lads.ids 255,0,0 OVERRIDE > model_redlad.cmm
 ```
+The `processing_scripts/color_beads.py` script specifies that all beads with ids listed in `lads.ids` should be colored in RGB value `255,0,0` (i.e. red color) in the Chrom3D output file ([https://www.cgl.ucsf.edu/chimera/docs/ContributedSoftware/volumepathtracer/volumepathtracer.html#markerfiles](CMM) file format).
+
 - Do the steps from step 18., but open and visualize the `model_redlad.cmm` file instead
 
 **Example of visualization in ChimeraX**:
