@@ -117,7 +117,7 @@ mkdir hic/tads
 armatus-linux-x64 -r 50000 -c chr18 -S -i hic/matrix/chr18 -g .6 -o hic/tads/chr18
 ```
 
-The `-r 50000` sets the bin-size to 50000 bp,  `-c chr18` specifies that only chromosome 18 should be considdered, `-i hic/matrix/chr18` provides the input data (in matrix format), `-g .6` is the gamma-max parameter indicating the highest resolution to generate domains (often is set based on trial and error, `-o hic/tads/chr18` gives the output for the TADs.
+The `-r 50000` sets the bin-size to 50000 bp,  `-c chr18` specifies that only chromosome 18 should be considdered, `-S` specifies that sparse matrix format (3 column text file) is used, `-i hic/matrix/chr18` provides the input data (in matrix format), `-g .6` is the gamma-max parameter indicating the highest resolution to generate domains (often is set based on trial and error), `-o hic/tads/chr18` gives the output for the TADs.
 
 ```diff
 !If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by:
@@ -133,7 +133,7 @@ awk '{printf("%s\t%i\t%i\n",$1,$2,$3+1)}' hic/tads/chr18.consensus.txt > hic/tad
 ```bash
 bedtools complement -L -i hic/tads/chr18.consensus.bed -g chrom_hg19.sizes | cat - hic/tads/chr18.consensus.bed | bedtools sort -g chrom_hg19.sizes > chr18_beads.bed
 ```
-This one-liner combines the complementary (non-TAD) genomic regions (found using `bedtools complement`) with the TADs to generate a fully segmented chromosome 18 (needed by Chrom3D. `-L` in `bedtools complement` limits output to solely the chromosomes with records in the input file. `-g` specifies the chromosome size. `bedtools sort` orders the genomic regions by their position on the chromosome. This file will define the "beads" in the Chrom3D model.
+This one-liner combines the complementary (non-TAD) genomic regions (found using `bedtools complement`) with the TADs to generate a fully segmented chromosome 18 (needed by Chrom3D). `-L` in `bedtools complement` limits output to solely the chromosomes with records in the input file. `-g` specifies the chromosome size. `bedtools sort` orders the genomic regions by their position on the chromosome. This file will define the "beads" in the Chrom3D model.
 
 **13. Map intra-chromosomal interactions from Hi-C to the beads defined in the previous step and aggregate the contacts between these beads**
 ```bash
@@ -149,7 +149,7 @@ This maps the left and right part of the Hi-C interactions to the using `bedtool
 ```bash
 curl -s "http://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz" | gunzip -c | grep acen | bedtools pairtobed -a chr18_bead_interactions.intra.bedpe -b stdin -type neither > chr18_bead_interactions.intra.nocen.bedpe
 ```
-This is done, since interactions involving centromeric beads are often artefactual.
+Download (using `curl`) a textfile containing information about cytobands in hg19, then unzip this file and fetch all centromeric regions ("acen"). These regions are then overlapped with the chr18 beads positions using `bedtools pairtobed`. With `bedtools pairtobed` using `-type neither`, only interactions where neither of the beads overlap with centromeres are retained. This is done, since interactions involving centromeric beads are often artefactual.
 ```diff
 !If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by:
 cp backup/14/chr18_bead_interactions.intra.nocen.bedpe .
@@ -169,7 +169,7 @@ cp backup/15/chr18_bead_interactions.intra.nocen.NCHG.sig .
 
 **16. Generate the Chrom3D input file in GTrack format, specifying the 3D model setup**
 
-Chrom3D relies on the [GTrack](https://github.com/gtrack/gtrack) file format for specifying the model setup. This includes the genomic position of the beads, their size, interactions between them and interactions with the nuclear periphery. This input file also defines the color of the beads.
+Chrom3D relies on the [GTrack](https://github.com/gtrack/gtrack) file format for specifying the model setup. This includes the genomic position of the beads, their size, interactions between them and interactions with the nuclear periphery. This input file also can be used to define the color of the beads.
 ```bash
 # Make a GTrack file specifying all beads and interactions between them:
 python processing_scripts/makeGtrack.py chr18_bead_interactions.intra.nocen.NCHG.sig chr18_beads.bed > chr18_bead_interactions.gtrack
@@ -178,6 +178,9 @@ echo -e "##gtrack version: 1.0\n##track type: linked segments\n###seqid\tstart\t
 
 bedtools intersect -c -a chr18_bead_interactions.gtrack -b lad/GSE109924_lad_D0-rep1.bed | awk '{if($7>=1) print $1 "\t" $2 "\t" $3 "\t" $4 "\t" $5 "\t1\t" $6; else  print $1 "\t" $2 "\t" $3 "\t" $4 "\t" $5 "\t.\t" $6}' >> chr18_bead_interactions.lads.gtrack 
 ```
+
+The script `processing_scripts/makeGtrack.py` is used to define all beads in `chr18_beads.bed` in GTrack format, and specifies interactions between these beads based on the `chr18_bead_interactions.intra.nocen.NCHG.sig` file. Then, the GTrack header is added before `bedtools intersect -c` is used to overlap each bead defined in the GTrack file with lads defined in the `lad/GSE109924_lad_D0-rep1.bed` file. Note that the GTrack file is treated as a regular BED file by bedtools, illustrating the convenience of the GTrack format in combinaton with bedtools.
+
 ```diff
 !If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by:
 cp backup/16/chr18_bead_interactions.lads.gtrack .
@@ -185,8 +188,13 @@ cp backup/16/chr18_bead_interactions.lads.gtrack .
 
 **17. Run Chrom3D based on the GTrack file**
 ```bash
-Chrom3D -c 0.001 --nucleus -l 10000 -y 0.01 -r 5.0 -n 100000 chr18_bead_interactions.lads.gtrack > model.cmm
+Chrom3D -n 100000 -r 5.0 --nucleus -y 0.01 -l 10000 -c 0.001  chr18_bead_interactions.lads.gtrack > model.cmm
 ```
+This step runs Chrom3D according to the model options defined in the `chr18_bead_interactions.lads.gtrack` file. 
+
+The parameter `-n 100000` specifies the total number of iterations (100,000), `-r 5.0` sets the nuclear radius to 5μm, `--nucleus` specififies that all beads should be constrained within the nucleus, `-y 0.01` sets the volume of the chromosome model to be 1% of the total volume of the nucleus, `-l 10000` specifies that logging information should be output every 10,000 iterations. The final parameter `-c 0.001` sets the cooling-rate. When this number is set different from 0 (like here) the optimization procedure uses simulated annealing. The temperature will decrease gradually during the simulation with the slope determined by c for each accepted move. The simulated annealing approach works better/faster in single chromosome models, whereas a Metropolis-Hastings (`-c 0` [default]) criterion is better for larger systems consisting of multiple chromosomes.
+
+
 ```diff
 !If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by:
 cp backup/17/model.cmm
