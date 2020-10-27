@@ -215,7 +215,7 @@ unzip -j -d processing_scripts/ v.1.2.zip preprocess_scripts-v.1.2/color_beads.p
 awk '$6==1' chr18_bead_interactions.lads.gtrack | cut -f 4 > lads.ids
 python processing_scripts/color_beads.py model.cmm lads.ids 255,0,0 OVERRIDE > model_redlad.cmm
 ```
-The `processing_scripts/color_beads.py` script specifies that all beads with ids listed in `lads.ids` should be colored in RGB value `255,0,0` (i.e. red color) in the Chrom3D output file ([https://www.cgl.ucsf.edu/chimera/docs/ContributedSoftware/volumepathtracer/volumepathtracer.html#markerfiles](CMM) file format).
+The `processing_scripts/color_beads.py` script specifies that all beads with ids listed in `lads.ids` should be colored in RGB value `255,0,0` (i.e. red color) in the Chrom3D output file ([CMM](https://www.cgl.ucsf.edu/chimera/docs/ContributedSoftware/volumepathtracer/volumepathtracer.html#markerfiles) file format).
 
 - Do the steps from step 18., but open and visualize the `model_redlad.cmm` file instead
 
