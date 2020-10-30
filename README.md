@@ -18,13 +18,13 @@ To follow the steps in this tutorial you will first need to install some softwar
 - [ChimeraX](https://www.rbvi.ucsf.edu/chimerax/) ([Installation instructions](https://www.rbvi.ucsf.edu/chimerax/download.html)) (installed on your local computer)
 
 # A step-by-step guide showing how Chrom3D can be used to generate a 3D genome model of human chromsome 18
-**1.  Setup this tutorial and download the Hi-C data**
+**1.  Setup this tutorial and download the Hi-C data***
 ```bash
 git clone https://github.com/Chrom3D/INC-tutorial.git
 cd INC-tutorial
 ```
 
-**2. Download LAD data**
+**2. Download LAD data***
 
 We will use LADs (in BED format) based on Lamin B1 ChIP-seq data in the same cell-line.
 ```bash
@@ -43,7 +43,7 @@ curl -O https://raw.githubusercontent.com/nservant/HiC-Pro/master/annotation/Hin
 tar -zxvf hg19_chr18/* -C hg19_chr18
 ```
 
-**4. Downloading and installing the required processing scripts**
+**4. Downloading and installing the required processing scripts***
 
 As part of the Chrom3D package, several processing scripts are available to reformat and process the data to prepare for running Chrom3D.
 ```bash
@@ -57,7 +57,7 @@ unzip -j -d processing_scripts/ v.1.2.zip preprocess_scripts-v.1.2/unmappable_bl
 unzip -j -d processing_scripts/ v.1.2.zip preprocess_scripts-v.1.2/makeGtrack.py
 ```
 
-**5. Installing NCHG**
+**5. Installing NCHG***
 
 This program, which is also part of the Chrom3D package, determines statistically significant interactions from Hi-C data based on the Non-central Hypergeometric distribution.
 ```bash
@@ -89,7 +89,7 @@ mkdir -p hic/bedpe/intra
 mkdir -p hic/matrix
 ```
 
-**9. Convert Hi-C to BEDPE and matrix format**
+**9. Convert Hi-C to BEDPE and matrix format***
 
 The output from HiC-Pro needs to be converte to [BEDPE](https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format) in order to be processed further by Chrom3D, and to a matrix format in order to be compatible with the Armatus TAD caller.
 ```bash
