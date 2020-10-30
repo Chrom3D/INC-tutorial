@@ -18,7 +18,7 @@ To follow the steps in this tutorial you will first need to install some softwar
 - [ChimeraX](https://www.rbvi.ucsf.edu/chimerax/) ([Installation instructions](https://www.rbvi.ucsf.edu/chimerax/download.html)) (installed on your local computer)
 
 # A step-by-step guide showing how Chrom3D can be used to generate a 3D genome model of human chromsome 18
-**1.  Setup this tutorial and download the Hi-C data***
+**1.  Setup this tutorial and download the Hi-C data**
 ```bash
 git clone https://github.com/Chrom3D/INC-tutorial.git
 cd INC-tutorial
