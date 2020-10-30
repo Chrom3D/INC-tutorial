@@ -206,6 +206,8 @@ cp backup/17/model_redlad.cmm
 - The resulting `model.cmm` (and `model_redlad.cmm` from step 19) can be opened in ChimeraX and displays of these turned on and off in the bottom right "Models" panel. To generate tomographic views of models, the command "clip" can be used in the "Command:" field in the bottom panel of ChimeraX. Background color and other graphical adjustments can be performed by clicking the "Graphics" button in the top panel.
 - In ChimeraX, the command `shape sphere center 0,0,0 radius 5.0 color #ffc9b5 slab 0.5` can be used in the "Command" field in the bottom panel to display a nucleus structure on top of the model view. To change opacity of the nucleus model, click the colored square called "sphere" in the "Models" panel in the bottom right of the view, and select e.g. 30%. 
 - Again, "clip" can be used to clip this to generate tomographic views. The model can also be tilted to allow a better perception of depth in the structures. Figure 4 shows some of the resulting illustrations that can be generated using ChimeraX.
+- Tip: if you want white background, run the command `lighting depthCueColor black` before you select White in the Background section of the top panel
+- Tip: by running the command `shape sphere center 0,0,0 radius 5.0 color #ffc9b5 mesh true`, you get a mesh/grid visualization of the nuclear boundary
 
 
 **19. Coloring beads defined by LADs using red color**
