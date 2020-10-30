@@ -225,4 +225,4 @@ The `processing_scripts/color_beads.py` script specifies that all beads with ids
 
 <img src="images/lad1.png" width="300">   <img src="images/lad2.png" width="318">
 
-*\*If you are completely stuck, redo the steps marked with an asterisk (\*), and jump in on one of the orange (!) lines
+\*If you are completely stuck, redo the steps marked with an asterisk (\*), and jump in on one of the orange (!) lines
