@@ -68,7 +68,7 @@ make -C processing_scripts/NCHG_hic/
 **6. Adapting the `config-hicpro.txt` file**
 
 To prepare for running HiC-Pro, we will need to change two lines in the `config-hicpro.txt` file. Use a text-editor (like emacs, vim, nano, (or TextEdit [MacOS]) to:
-- Add the bowtie path to line nr. 39: `BOWTIE2_IDX_PATH =` -> `BOWTIE2_IDX_PATH = [fullpath]/INC-tutorial/hg19]/` where `[fullpath]` is the full path to your current working directory (use the `pwd` command if you are uncertain about the working dir.) 
+- Add the bowtie path to line nr. 39: `BOWTIE2_IDX_PATH =` -> `BOWTIE2_IDX_PATH = [fullpath]/hg19_chr18/` where `[fullpath]` is the full path to your current working directory, i.e. the `INC-tutorial` directory (use the `pwd` command if you are uncertain about the working dir.) 
 - Change the reference genome on 39: `REFERENCE_GENOME =` -> `REFERENCE_GENOME = hg19_chr18`
 - Change line nr. 89: `BIN_SIZE = 20000 40000 150000 500000 1000000` -> `BIN_SIZE = 50000 1000000`
 
