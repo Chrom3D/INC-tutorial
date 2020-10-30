@@ -57,7 +57,7 @@ unzip -j -d processing_scripts/ v.1.2.zip preprocess_scripts-v.1.2/unmappable_bl
 unzip -j -d processing_scripts/ v.1.2.zip preprocess_scripts-v.1.2/makeGtrack.py
 ```
 
-**5. Installing NCHG***
+**5. Installing NCHG**
 
 This program, which is also part of the Chrom3D package, determines statistically significant interactions from Hi-C data based on the Non-central Hypergeometric distribution.
 ```bash
