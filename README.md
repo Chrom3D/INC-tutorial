@@ -40,8 +40,7 @@ HiC-Pro will be used to process the Hi-C data, including mapping the reads and a
 curl -O https://raw.githubusercontent.com/nservant/HiC-Pro/master/config-hicpro.txt
 curl -O https://raw.githubusercontent.com/nservant/HiC-Pro/master/annotation/chrom_hg19.sizes
 curl -O https://raw.githubusercontent.com/nservant/HiC-Pro/master/annotation/HindIII_resfrag_hg19.bed
-curl -O ftp://ftp.ccb.jhu.edu/pub/data/bowtie2_indexes/hg19.zip
-unzip hg19.zip -d hg19
+tar -zxvf hg19_chr18/* -C hg19_chr18
 ```
 
 **4. Downloading and installing the required processing scripts**
@@ -70,6 +69,7 @@ make -C processing_scripts/NCHG_hic/
 
 To prepare for running HiC-Pro, we will need to change two lines in the `config-hicpro.txt` file. Use a text-editor (like emacs, vim, nano, (or TextEdit [MacOS]) to:
 - Add the bowtie path to line nr. 39: `BOWTIE2_IDX_PATH =` -> `BOWTIE2_IDX_PATH = [fullpath]/INC-tutorial/hg19]/` where `[fullpath]` is the full path to your current working directory (use the `pwd` command if you are uncertain about the working dir.) 
+- Change the reference genome on 39: `REFERENCE_GENOME =` -> `REFERENCE_GENOME = hg19_chr18`
 - Change line nr. 89: `BIN_SIZE = 20000 40000 150000 500000 1000000` -> `BIN_SIZE = 50000 1000000`
 
 **7. Run HiC-Pro (Takes ~10 minutes)**
