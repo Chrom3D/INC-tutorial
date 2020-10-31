@@ -160,7 +160,7 @@ cp backup/14/chr18_bead_interactions.intra.nocen.bedpe .
 processing_scripts/NCHG_hic/NCHG -m 50000 -p chr18_bead_interactions.intra.nocen.bedpe > chr18_bead_interactions.intra.nocen.NCHG.out
 python processing_scripts/NCHG_fdr_oddratio_calc.py chr18_bead_interactions.intra.nocen.NCHG.out fdr_bh 2 0.01 > chr18_bead_interactions.intra.nocen.NCHG.sig
 ```
-Here, `NCHG` is used to determine statistically singificant interactions between beads. `-m 50000` gives the minimum interaction length (in bp), `-p chr18_bead_interactions.intra.nocen.bedpe` specifies the input file. The output is redirected into the file `chr18_bead_interactions.intra.nocen.NCHG.sig`. The `NCHG` program uses the Non-central Hypergeometric distribution to determine statistically singificant interactions. This model takes into account the total number of interactions on the chromosome, the number of interactions for the two involved beads, and the genomic/linear distance between the two beads.
+Here, `NCHG` is used to determine statistically singificant interactions between beads. `-m 50000` gives the minimum interaction length (in bp), `-p chr18_bead_interactions.intra.nocen.bedpe` specifies the input file. The output is redirected into the file `chr18_bead_interactions.intra.nocen.NCHG.sig`. The `NCHG` program uses the Non-central Hypergeometric distribution to determine statistically singificant interactions. This model takes into account the total number of interactions on the chromosome, the number of interactions for the two involved beads, and the genomic/linear distance between the two beads. The `processing_scripts/NCHG_fdr_oddratio_calc.py` script is used to select significant interactions after multiple testing correction using the Benjamini-Hochberg method (`fdr_bh`) at the 0.01 level, and with an overserved/expected ratio of 2.
 
 ```diff
 !If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by:
@@ -203,7 +203,7 @@ cp backup/17/model_redlad.cmm
 
 **18. Visualizing `model.cmm` in ChimeraX**
 - If you are running this step-by-step guide on a server, download the `model.cmm` file to your local computer
-- The resulting `model.cmm` (and `model_redlad.cmm` from step 19) can be opened in ChimeraX and displays of these turned on and off in the bottom right "Models" panel. To generate tomographic views of models, the command "clip" can be used in the "Command:" field in the bottom panel of ChimeraX. Background color and other graphical adjustments can be performed by clicking the "Graphics" button in the top panel.
+- The resulting `model.cmm` (and `model_redlad.cmm` from step 19) can be opened in ChimeraX and displays of these turned on and off in the bottom right "Models" panel. To generate tomographic views of models, the command `clip` can be used in the "Command:" field in the bottom panel of ChimeraX. Background color and other graphical adjustments can be performed by clicking the "Graphics" button in the top panel.
 - In ChimeraX, the command `shape sphere center 0,0,0 radius 5.0 color #ffc9b5 slab 0.5` can be used in the "Command" field in the bottom panel to display a nucleus structure on top of the model view. To change opacity of the nucleus model, click the colored square called "sphere" in the "Models" panel in the bottom right of the view, and select e.g. 30%. 
 - Again, "clip" can be used to clip this to generate tomographic views. The model can also be tilted to allow a better perception of depth in the structures. Figure 4 shows some of the resulting illustrations that can be generated using ChimeraX.
 - Tip: if you want white background, run the command `lighting depthCueColor black` before you select White in the Background section of the top panel
@@ -217,7 +217,7 @@ unzip -j -d processing_scripts/ v.1.2.zip preprocess_scripts-v.1.2/color_beads.p
 awk '$6==1' chr18_bead_interactions.lads.gtrack | cut -f 4 > lads.ids
 python processing_scripts/color_beads.py model.cmm lads.ids 255,0,0 OVERRIDE > model_redlad.cmm
 ```
-The `processing_scripts/color_beads.py` script specifies that all beads with ids listed in `lads.ids` should be colored in RGB value `255,0,0` (i.e. red color) in the Chrom3D output file ([CMM](https://www.cgl.ucsf.edu/chimera/docs/ContributedSoftware/volumepathtracer/volumepathtracer.html#markerfiles) file format).
+The `lads.ids` now contains the ids (4th column) of all the beads with a periphery constraint (6th column) of 1. The `processing_scripts/color_beads.py` script specifies that all beads with ids listed in `lads.ids` should be colored in RGB value `255,0,0` (i.e. red color) in the Chrom3D output file ([CMM](https://www.cgl.ucsf.edu/chimera/docs/ContributedSoftware/volumepathtracer/volumepathtracer.html#markerfiles) file format). The `OVERRIDE` keyword specifies that any existing color definitions in the file should be ignored. 
 
 - Do the steps from step 18., but open and visualize the `model_redlad.cmm` file instead
 
