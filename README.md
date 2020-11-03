@@ -93,10 +93,8 @@ mkdir -p hic/matrix
 
 The output from HiC-Pro needs to be converte to [BEDPE](https://bedtools.readthedocs.io/en/latest/content/general-usage.html#bedpe-format) in order to be processed further by Chrom3D, and to a matrix format in order to be compatible with the Armatus TAD caller.
 ```bash
-#BEDPE:
 awk 'NR==FNR { map[$4] = $1"\t"$2"\t"$3; next } { print $0,map[$1],map[$2] }' hicpro_results/hic_results/matrix/chr18/raw/50000/chr18_50000_abs.bed hicpro_results/hic_results/matrix/chr18/raw/50000/chr18_50000.matrix  | awk '$4==$7' | awk '{print $4"\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$3}' > hic/bedpe/intra/chr18
 
-# Matrix format:
 for chr in hic/bedpe/intra/*
 do
 chrname=$(basename $chr)
@@ -116,6 +114,7 @@ cp backup/9/matrix/chr18 hic/matrix/
 mkdir hic/tads
 armatus-linux-x64 -r 50000 -c chr18 -S -i hic/matrix/chr18 -g .6 -o hic/tads/chr18
 ```
+Note: if you get error messages here, try to see if you have installed armatus such that you can execute it as `armatus` instead of `armatus-linux-x64`.
 
 The `-r 50000` sets the bin-size to 50000 bp,  `-c chr18` specifies that only chromosome 18 should be considdered, `-S` specifies that sparse matrix format (3 column text file) is used, `-i hic/matrix/chr18` provides the input data (in matrix format), `-g .6` is the gamma-max parameter indicating the highest resolution to generate domains (often is set based on trial and error), `-o hic/tads/chr18` gives the output for the TADs.
 
@@ -143,7 +142,7 @@ cat hic/bedpe/intra/chr* | awk '{printf("%s\t%s\t%s\t%s\n",$4,$5,$5+1,$7)}' | be
 paste left.tmp right.tmp | awk '{a[$1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6] += $7} END{for (i in a) print i"\t"a[i]}' |  awk '$2!=$5' | sort -k 2n,2n > chr18_bead_interactions.intra.bedpe
 rm left.tmp right.tmp
 ```
-This maps the left and right part of the Hi-C interactions to the using `bedtools intersect`) to the Chrom3D beads defined in the previous step. Then, the left and right parts are combined (with `paste`) and their Hi-C contact frequencies are aggregated (using `awk`) to generate a BEDPE file consisting of contact frequencies between all beads on the chromosome.
+This maps the left and right part of the Hi-C interactions to the using `bedtools intersect` to the Chrom3D beads defined in the previous step. Then, the left and right parts are combined (with `paste`) and their Hi-C contact frequencies are aggregated (using `awk`) to generate a BEDPE file consisting of contact frequencies between all beads on the chromosome.
 
 **14. Remove interactions between beads overlapping centromeres**
 ```bash
@@ -160,6 +159,8 @@ cp backup/14/chr18_bead_interactions.intra.nocen.bedpe .
 processing_scripts/NCHG_hic/NCHG -m 50000 -p chr18_bead_interactions.intra.nocen.bedpe > chr18_bead_interactions.intra.nocen.NCHG.out
 python processing_scripts/NCHG_fdr_oddratio_calc.py chr18_bead_interactions.intra.nocen.NCHG.out fdr_bh 2 0.01 > chr18_bead_interactions.intra.nocen.NCHG.sig
 ```
+Note: if `python processing_scripts/NCHG_fdr_oddratio_calc.py` gives you error messages, try to replace `python` with `python3` or `python2.7` (depending on where `statsmodels` was installed)
+
 Here, `NCHG` is used to determine statistically singificant interactions between beads. `-m 50000` gives the minimum interaction length (in bp), `-p chr18_bead_interactions.intra.nocen.bedpe` specifies the input file. The output is redirected into the file `chr18_bead_interactions.intra.nocen.NCHG.sig`. The `NCHG` program uses the Non-central Hypergeometric distribution to determine statistically singificant interactions. This model takes into account the total number of interactions on the chromosome, the number of interactions for the two involved beads, and the genomic/linear distance between the two beads. The `processing_scripts/NCHG_fdr_oddratio_calc.py` script is used to select significant interactions after multiple testing correction using the Benjamini-Hochberg method (`fdr_bh`) at the 0.01 level, and with an overserved/expected ratio of 2.
 
 ```diff
@@ -171,15 +172,13 @@ cp backup/15/chr18_bead_interactions.intra.nocen.NCHG.sig .
 
 Chrom3D relies on the [GTrack](https://github.com/gtrack/gtrack) file format for specifying the model setup. This includes the genomic position of the beads, their size, interactions between them and interactions with the nuclear periphery. This input file also can be used to define the color of the beads.
 ```bash
-# Make a GTrack file specifying all beads and interactions between them:
 python processing_scripts/makeGtrack.py chr18_bead_interactions.intra.nocen.NCHG.sig chr18_beads.bed > chr18_bead_interactions.gtrack
-# Add LAD information to the GTrack file:
+
 echo -e "##gtrack version: 1.0\n##track type: linked segments\n###seqid\tstart\tend\tid\tradius\tperiphery\tedges" > chr18_bead_interactions.lads.gtrack
 
 bedtools intersect -c -a chr18_bead_interactions.gtrack -b lad/GSE109924_lad_D0-rep1.bed | awk '{if($7>=1) print $1 "\t" $2 "\t" $3 "\t" $4 "\t" $5 "\t1\t" $6; else  print $1 "\t" $2 "\t" $3 "\t" $4 "\t" $5 "\t.\t" $6}' >> chr18_bead_interactions.lads.gtrack 
 ```
-
-The script `processing_scripts/makeGtrack.py` is used to define all beads in `chr18_beads.bed` in GTrack format, and specifies interactions between these beads based on the `chr18_bead_interactions.intra.nocen.NCHG.sig` file. Then, the GTrack header is added before `bedtools intersect -c` is used to overlap each bead defined in the GTrack file with lads defined in the `lad/GSE109924_lad_D0-rep1.bed` file. Note that the GTrack file is treated as a regular BED file by bedtools, illustrating the convenience of the GTrack format in combinaton with bedtools.
+The script `processing_scripts/makeGtrack.py` is used to define all beads in `chr18_beads.bed` in GTrack format, and specifies interactions between these beads based on the `chr18_bead_interactions.intra.nocen.NCHG.sig` file. Then, the GTrack header is added (`echo -e`...) before `bedtools intersect -c` is used to overlap each bead defined in the GTrack file with lads defined in the `lad/GSE109924_lad_D0-rep1.bed` file. Note that the GTrack file is treated as a regular BED file by bedtools, illustrating the convenience of the GTrack format in combinaton with bedtools.
 
 ```diff
 !If you are stuck at this point, you can copy nesessary files to proceed with the remaining steps by:
